@@ -4,12 +4,10 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.widget.TextView;
 
 import net.jipg.ddns.utils.AliDnsUtil;
 import net.jipg.ddns.utils.NetworkUtils;
@@ -36,6 +34,16 @@ public class DdnsService extends Service {
         Log.d(TAG, "onCreate()");
         Timer timer = new Timer();
         timer.schedule(new DdnsTimerTask(), 0, 30 * 1000);
+        timer.schedule(new ShowLogTimerTask(), 0, 3 * 1000);
+    }
+
+    class ShowLogTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            Message message = Message.obtain(MainActivity.handler, 1, 2, 3, "");
+            message.sendToTarget();
+        }
     }
 
     class DdnsTimerTask extends TimerTask {
@@ -53,8 +61,13 @@ public class DdnsService extends Service {
                 lastIp = ip;
             }
             sb.append("\n");
-            Message message = Message.obtain(MainActivity.handler, 1, 2, 3, sb.toString());
-            message.sendToTarget();
+
+            String log = LogCacheUtil.getLog(MainActivity.context);
+            if (log.length() >= 4000) {
+                Log.d(TAG, "do clear");
+                LogCacheUtil.clearLog(MainActivity.context);
+            }
+            LogCacheUtil.addLog(MainActivity.context, sb.toString());
         }
     }
 
@@ -69,9 +82,9 @@ public class DdnsService extends Service {
         builder.setContentIntent(PendingIntent.
                 getActivity(this, 0, nfIntent, 0)) // 设置PendingIntent
 //                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_large)) // 设置下拉列表中的图标(大图标)
-                .setContentTitle("下拉列表中的Title") // 设置下拉列表里的标题
+                .setContentTitle("DDNS后台任务") // 设置下拉列表里的标题
                 .setSmallIcon(R.mipmap.ic_launcher) // 设置状态栏内的小图标
-                .setContentText("要显示的内容") // 设置上下文内容
+                .setContentText("DDNS后台任务") // 设置上下文内容
                 .setWhen(System.currentTimeMillis()); // 设置该通知发生的时间
         Notification notification = builder.build(); // 获取构建好的Notification
         notification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音

@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static TextView textView;
-    private static Context context;
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +51,6 @@ public class MainActivity extends AppCompatActivity {
     public static Handler handler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
-            String log = LogCacheUtil.getLog(context);
-
-            if (log.length() >= 4000) {
-                Log.d(TAG, "do clear");
-                LogCacheUtil.clearLog(context);
-            }
-            LogCacheUtil.addLog(context, msg.obj.toString());
             textView.setText(LogCacheUtil.getLog(context));
             int scrollHeight = textView.getLayout().getLineTop(textView.getLineCount()) - textView.getHeight();
             if (scrollHeight > 0) {
