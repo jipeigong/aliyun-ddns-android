@@ -2,8 +2,6 @@ package net.jipg.ddns.utils;
 
 import android.util.Base64;
 
-import net.jipg.ddns.MainActivity;
-
 import org.threeten.bp.DateTimeUtils;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
@@ -42,8 +40,8 @@ public class AliDnsUtil {
 
     private static final String TAG = AliDnsUtil.class.getSimpleName();
 
-    private static String accessKeyId = "xxxxxx";
-    private static String accessKeySecret = "xxxxxx";
+    private static String accessKeyId = "xxxxxxxxxxxxxx";
+    private static String accessKeySecret = "xxxxxxxxxxxxxxxxxxxxxx";
 
     public static final String UTF_8 = "UTF-8";
     public static final String ALIYUN_DNS_HOST = "http://alidns.aliyuncs.com/";

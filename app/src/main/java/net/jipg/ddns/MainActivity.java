@@ -1,5 +1,6 @@
 package net.jipg.ddns;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,8 +20,9 @@ import net.jipg.ddns.utils.AliDnsUtil;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    
+
     private static TextView textView;
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView);
         textView.setMovementMethod(ScrollingMovementMethod.getInstance());
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+
+        context = getApplicationContext();
+
         //启动Service
         startService(new Intent(this, DdnsService.class));
 
@@ -37,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG,AliDnsUtil.getDomainRecords("jipg.net"));
+                Log.d(TAG, AliDnsUtil.getDomainRecords("jipg.net"));
             }
         }).start();
 
@@ -46,14 +51,18 @@ public class MainActivity extends AppCompatActivity {
     public static Handler handler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
-            if (textView.getLineCount() >= 200) {
-                Log.d(TAG,"do clear");
-                textView.setText("");
+            String log = LogCacheUtil.getLog(context);
+
+            if (log.length() >= 4000) {
+                Log.d(TAG, "do clear");
+                LogCacheUtil.clearLog(context);
             }
-            textView.append(msg.obj.toString());
+            LogCacheUtil.addLog(context, msg.obj.toString());
+            textView.setText(LogCacheUtil.getLog(context));
             int scrollHeight = textView.getLayout().getLineTop(textView.getLineCount()) - textView.getHeight();
-            if (scrollHeight > 0)
+            if (scrollHeight > 0) {
                 textView.scrollTo(0, scrollHeight);
+            }
         }
     };
 
