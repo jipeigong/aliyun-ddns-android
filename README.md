@@ -6,7 +6,7 @@
 android手机更加适合ddns场景，一般家里都有几台废弃的android手机，连接wifi即可作为DDNS的基础设备。
   
   
-  阿里云控制台RAM中获取accessKyeId和accessKeySecret，记得授权dns权限。
+  阿里云控制台RAM中获取accessKyeId和accessKeySecret，记得授权dns权限。并没有使用官方的java sdk，引入有冲突，用的http通用接口，手撸参数摘要加签，加签撸起来酸爽...有一点不一样就不行。
 ```
 public class AliDnsUtil {
 
