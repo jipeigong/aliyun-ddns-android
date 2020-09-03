@@ -1,5 +1,9 @@
 package net.jipg.ddns.utils;
 
+import android.util.Log;
+
+import net.jipg.ddns.DdnsService;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,13 +21,16 @@ import java.util.regex.Pattern;
  * @date 2020-09-01 11:16:07
  **/
 public class NetworkUtils {
+    private static final String TAG = DdnsService.class.getSimpleName();
+
+
     private static final int TIME_OUT_MILLS = 3000;
     private static final String PATTERN = "\\<dd class\\=\"fz24\">(.*?)\\<\\/dd>";
     private static Pattern pattern = Pattern.compile(PATTERN);
 
 
     public static void main(String[] args) {
-        System.out.println(getV4Ip());
+        Log.d(TAG, getV4Ip());
     }
 
     public static boolean ping(String ipAddress) throws Exception {

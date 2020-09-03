@@ -2,6 +2,8 @@ package net.jipg.ddns.utils;
 
 import android.util.Base64;
 
+import net.jipg.ddns.MainActivity;
+
 import org.threeten.bp.DateTimeUtils;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
@@ -37,6 +39,8 @@ import okhttp3.Response;
  * @date 2020 -09-01 11:11:29
  */
 public class AliDnsUtil {
+
+    private static final String TAG = AliDnsUtil.class.getSimpleName();
 
     private static String accessKeyId = "xxxxxx";
     private static String accessKeySecret = "xxxxxx";

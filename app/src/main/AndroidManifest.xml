@@ -3,6 +3,8 @@
     package="net.jipg.ddns">
 
     <application
+        android:priority="1000"
+        android:persistent="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -17,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".DdnsService"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest>
